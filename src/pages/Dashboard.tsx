@@ -176,109 +176,29 @@ const Dashboard: React.FC = () => {
   console.log(setDarkMode);
 
   // --- LOGIN / SIGNUP MODAL ---
-  {!isLoggedIn && (
-  <div
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      width: '100vw',
-      backgroundImage:
-        'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      fontFamily: '"Inter", sans-serif',
-      overflow: 'hidden',
-      position: 'relative',
-    }}
-  >
-    <canvas
-      id="particles"
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-      }}
-    ></canvas>
-
-    <div
-      style={{
-        width: '800px',
-        maxWidth: '95%',
-        height: '500px',
-        borderRadius: '24px',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        display: 'flex',
-        overflow: 'hidden',
-        boxShadow: '0 10px 40px rgba(0,0,0,0.25)',
-      }}
-    >
-      {/* Left Side */}
-      <div
-        style={{
-          flex: 1,
-          backgroundColor: 'rgba(37, 99, 235, 0.85)',
-          color: 'white',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '40px 20px',
-          textAlign: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: '80px',
-            height: '80px',
-            borderRadius: '16px',
-            backgroundColor: 'white',
-            color: '#2563eb',
-            fontWeight: '800',
-            fontSize: '36px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          S
-        </div>
-        <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '15px' }}>Study Vault</h1>
-        <p style={{ fontSize: '14px', lineHeight: '1.6', maxWidth: '200px' }}>
-          Organise Subjects, Upload Notes, and keep every resource in one source, focused Workspace.
-        </p>
+  return (
+  <>
+    {!isLoggedIn ? (
+      <LoginSignupModal
+        authMode={authMode}
+        setAuthMode={setAuthMode}
+        authEmail={authEmail}
+        setAuthEmail={setAuthEmail}
+        authPassword={authPassword}
+        setAuthPassword={setAuthPassword}
+        userEmail={userEmail}
+        userPassword={userPassword}
+        setIsLoggedIn={setIsLoggedIn}
+        setUserEmail={setUserEmail}
+        setUserPassword={setUserPassword}
+      />
+    ) : (
+      <div style={styles.appContainer}>
+        {/* Your existing dashboard JSX */}
       </div>
-
-      {/* Right Side */}
-      <div
-        style={{
-          flex: 1,
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '40px 50px',
-        }}
-      >
-        {authMode === 'login' && (
-          <>
-            <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
-              Welcome Back
-            </h2>
-            <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '30px' }}>Sign in to your Account</p>
-
-            <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Email</label>
-            <input
-              type="email"
-              value={authEmail}
-              onChange={(e) => setAuthEmail(e.target.value)}
+    )}
+  </>
+);
               placeholder="Enter your email"
               style={{
                 padding: '14px',
@@ -734,7 +654,49 @@ const styles: { [key: string]: React.CSSProperties } = {
   downloadLink: { padding:'12px 24px', backgroundColor:'#2563eb', color:'#fff', borderRadius:'12px', textDecoration:'none', fontWeight:'700', fontSize:'14px' }
 };
 
+interface LoginSignupModalProps {
+  authMode: 'login' | 'signup';
+  setAuthMode: React.Dispatch<React.SetStateAction<'login' | 'signup'>>;
+  authEmail: string;
+  setAuthEmail: React.Dispatch<React.SetStateAction<string>>;
+  authPassword: string;
+  setAuthPassword: React.Dispatch<React.SetStateAction<string>>;
+  userEmail: string;
+  userPassword: string;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUserEmail: React.Dispatch<React.SetStateAction<string>>;
+  setUserPassword: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const LoginSignupModal: React.FC<LoginSignupModalProps> = ({
+  authMode, setAuthMode, authEmail, setAuthEmail, authPassword, setAuthPassword,
+  userEmail, userPassword, setIsLoggedIn, setUserEmail, setUserPassword
+}) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        width: '100vw',
+        backgroundImage:
+          'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        fontFamily: '"Inter", sans-serif',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* Left Side / Right Side JSX stays the same */}
+      {/* ... copy all your previous modal JSX here ... */}
+    </div>
+  );
+};
+
 export default Dashboard;
+
 
 
 
