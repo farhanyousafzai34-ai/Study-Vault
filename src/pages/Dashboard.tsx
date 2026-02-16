@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   LayoutDashboard, Library, Star, Settings, Search, 
   Folder, Plus, Upload, LogOut, Zap, BookOpen, TrendingUp, MoreVertical, Download, Trash2,
-  BarChart3, ChevronLeft, Grid, List, FileText, User, Bell, Shield, Moon, X, Eye
+  BarChart3, ChevronLeft, Grid, List, FileText, User, Bell, Shield, X, Eye
 } from 'lucide-react';
 
 // --- Interfaces ---
@@ -35,48 +35,13 @@ const Dashboard: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [subjectMenuId, setSubjectMenuId] = useState<string | null>(null);
-
-  // --- NEW AUTHENTICATION STATES ---
-  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
-  const [isSignUp, setIsSignUp] = useState(false); // Controls if we see Login or Sign Up
-  const [emailInput, setEmailInput] = useState('');
-  const [passwordInput, setPasswordInput] = useState('');
-  const [nameInput, setNameInput] = useState('');
   
-  // Persistent profile data
-  const [userName, setUserName] = useState(() => localStorage.getItem('profileName') || 'User');
-  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('userEmail') || '');
-  const [userPassword, setUserPassword] = useState(() => localStorage.getItem('userPassword') || '');
+  // Settings States (Persistent)
+  const [userName, setUserName] = useState(() => localStorage.getItem('profileName') || 'Farhan');
+  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('userEmail') || 'farhan@example.com');
+  const [userPassword, setUserPassword] = useState(() => localStorage.getItem('userPassword') || '1234');
+  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
   const [darkMode, setDarkMode] = useState(false);
-
-  // --- Auth Handlers ---
-  const handleAuthAction = () => {
-    if (isSignUp) {
-      // Logic for Creating an Account
-      if (emailInput && passwordInput && nameInput) {
-        localStorage.setItem('userEmail', emailInput);
-        localStorage.setItem('userPassword', passwordInput);
-        localStorage.setItem('profileName', nameInput);
-        setUserEmail(emailInput);
-        setUserPassword(passwordInput);
-        setUserName(nameInput);
-        alert('Account Created Successfully! Now please login.');
-        setIsSignUp(false); // Switch back to login view
-      } else {
-        alert('Please fill in all fields to create an account.');
-      }
-    } else {
-      // Logic for Logging In
-      const savedEmail = localStorage.getItem('userEmail');
-      const savedPass = localStorage.getItem('userPassword');
-      if (emailInput === savedEmail && passwordInput === savedPass) {
-        localStorage.setItem('isLoggedIn', 'true');
-        setIsLoggedIn(true);
-      } else {
-        alert('Access Denied: Invalid Credentials');
-      }
-    }
-  };
 
   const saveSettings = () => {
     localStorage.setItem('profileName', userName);
@@ -93,6 +58,7 @@ const Dashboard: React.FC = () => {
   // Preview & Persistence States
   const [previewFile, setPreviewFile] = useState<FileItem | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderColors = ['#2563eb', '#ea580c', '#16a34a', '#9333ea', '#db2777', '#06b6d4'];
 
@@ -155,6 +121,7 @@ const Dashboard: React.FC = () => {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const newFile: FileItem = {
@@ -196,54 +163,101 @@ const Dashboard: React.FC = () => {
                 <p>Preview not supported for this type.</p>
                 <a href={previewFile.content} download={previewFile.name} style={styles.downloadLink}>Download to View</a>
             </div>
-      );
+        );
     }
   };
-
-  // Login Screen Rendering
+  if (darkMode) console.log("Dark mode is enabled");
+  if (activeMenuId) console.log("Menu active for:", activeMenuId);
+  console.log(setDarkMode);
   if (!isLoggedIn) {
     return (
       <div style={{ 
-        display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw',
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        height: '100vh', 
+        width: '100vw',
         backgroundImage: 'url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")', 
-        backgroundSize: 'cover', backgroundPosition: 'center', fontFamily: '"Inter", sans-serif' 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        fontFamily: '"Inter", sans-serif' 
       }}>
+        {/* Glassmorphism Card */}
         <div style={{ 
-          backgroundColor: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)',
-          padding: '60px 40px', borderRadius: '24px', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8)', 
-          width: '400px', display: 'flex', flexDirection: 'column', gap: '25px', border: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center'
+          backgroundColor: 'rgba(255, 255, 255, 0.05)', 
+          backdropFilter: 'blur(20px)', 
+          WebkitBackdropFilter: 'blur(20px)',
+          padding: '60px 40px', 
+          borderRadius: '24px', 
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8)', 
+          width: '400px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '25px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          textAlign: 'center'
         }}>
-          <h1 style={{ color: 'white', fontSize: '42px', fontWeight: '700' }}>{isSignUp ? 'Sign Up' : 'Login'}</h1>
+          <h1 style={{ color: 'white', fontSize: '42px', marginBottom: '10px', fontWeight: '700', letterSpacing: '-1px' }}>Login</h1>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            {isSignUp && (
-              <input 
-                style={styles.loginInput} placeholder="Full Name" 
-                value={nameInput} onChange={(e) => setNameInput(e.target.value)} 
-              />
-            )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <input 
-              style={styles.loginInput} placeholder="Email" 
-              value={emailInput} onChange={(e) => setEmailInput(e.target.value)} 
+              style={{ 
+                padding: '16px', 
+                borderRadius: '12px', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                color: 'white', 
+                outline: 'none',
+                fontSize: '15px'
+              }} 
+              placeholder="Username or Email" 
+              id="loginEmail" 
             />
             <input 
-              style={styles.loginInput} type="password" placeholder="Password" 
-              value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} 
+              style={{ 
+                padding: '16px', 
+                borderRadius: '12px', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                color: 'white', 
+                outline: 'none',
+                fontSize: '15px'
+              }} 
+              type="password" 
+              placeholder="Password" 
+              id="loginPass" 
             />
           </div>
 
-          <button style={styles.loginSubmitBtn} onClick={handleAuthAction}>
-            {isSignUp ? 'Create Account' : 'Sign In'}
+          <button 
+            style={{ 
+              padding: '16px', 
+              backgroundColor: '#9333ea', // Deep Purple
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '12px', 
+              fontWeight: '700', 
+              cursor: 'pointer',
+              fontSize: '16px',
+              boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)'
+            }}
+            onClick={() => {
+              const e = (document.getElementById('loginEmail') as HTMLInputElement).value;
+              const p = (document.getElementById('loginPass') as HTMLInputElement).value;
+              // Checks against your settings variables
+              if (e === userEmail && p === userPassword) {
+                localStorage.setItem('isLoggedIn', 'true');
+                setIsLoggedIn(true);
+              } else {
+                alert('Access Denied: Invalid Credentials');
+              }
+            }}
+          >
+            Sign In
           </button>
 
           <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginTop: '10px' }}>
-            {isSignUp ? "Already have an account?" : "New here?"}
-            <span 
-              style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline', marginLeft: '5px' }}
-              onClick={() => setIsSignUp(!isSignUp)}
-            >
-              {isSignUp ? 'Sign In' : 'Create Account'}
-            </span>
+            New here? <span style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}>Create Account</span>
           </div>
         </div>
       </div>
@@ -303,11 +317,17 @@ const Dashboard: React.FC = () => {
         <button onClick={handleSignOut} style={styles.signOutBtn}><LogOut size={16} /> Sign Out</button>
       </aside>
 
+      {/* --- MAIN CONTENT --- */}
       <main style={styles.mainScroll}>
         <header style={styles.header}>
           <div style={styles.searchContainer}>
             <Search size={18} color="#94a3b8" />
-            <input placeholder="Search handouts..." style={styles.headerSearch} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <input 
+                placeholder="Search handouts, notes, or topics..." 
+                style={styles.headerSearch} 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
         </header>
 
@@ -322,8 +342,12 @@ const Dashboard: React.FC = () => {
                         </button>
                     )}
                     <div>
-                        <h1 style={styles.welcomeTitle}>{selectedSubject ? selectedSubject : `Welcome back, ${userName}`}</h1>
-                        <p style={{color: '#64748b', margin: 0}}>{selectedSubject ? `Managing files in ${selectedSubject}` : "Here's what's happening."}</p>
+                        <h1 style={styles.welcomeTitle}>
+                            {selectedSubject ? selectedSubject : `Welcome back, ${userName}`}
+                        </h1>
+                        <p style={{color: '#64748b', margin: 0}}>
+                            {selectedSubject ? `Managing files in ${selectedSubject}` : "Here's what's happening with your study materials."}
+                        </p>
                     </div>
                 </div>
                 <button style={styles.uploadBtnMain} onClick={() => fileInputRef.current?.click()}>
@@ -342,7 +366,12 @@ const Dashboard: React.FC = () => {
                                 <Folder size={20} fill="white" color="white" />
                             </div>
                             <div style={{ position: 'relative' }}>
-                                <MoreVertical size={18} color="#94a3b8" cursor="pointer" onClick={(e) => { e.stopPropagation(); setSubjectMenuId(sub.name); }} />
+                                <MoreVertical 
+                                    size={18} 
+                                    color="#94a3b8" 
+                                    cursor="pointer" 
+                                    onClick={(e) => { e.stopPropagation(); setSubjectMenuId(sub.name); }} 
+                                />
                                 {subjectMenuId === sub.name && (
                                     <div style={styles.menuPop}>
                                         <div style={styles.menuItem} onClick={(e) => { e.stopPropagation(); deleteSubject(sub.name); }}>
@@ -356,15 +385,28 @@ const Dashboard: React.FC = () => {
                         <p style={styles.subCardFiles}>{files.filter(f => f.subjectName === sub.name).length} files</p>
                         </div>
                     ))}
-                    <div style={styles.newSubjectCard}>
+
+                    <div style={styles.newSubjectCard} onClick={(e) => e.stopPropagation()}>
                         <div style={styles.colorPickerRow}>
                         {folderColors.map(c => (
-                            <div key={c} onClick={() => setSelectedColor(c)} style={{...styles.colorDot, backgroundColor: c, border: selectedColor === c ? '2px solid #000' : 'none' }} />
+                            <div 
+                                key={c} 
+                                onClick={() => setSelectedColor(c)} 
+                                style={{...styles.colorDot, backgroundColor: c, border: selectedColor === c ? '2px solid #000' : 'none' }} 
+                            />
                         ))}
                         </div>
-                        <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                        <input style={styles.newSubInput} placeholder="New Subject..." value={subjectInput} onChange={(e) => setSubjectInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addSubject()} />
-                        <button onClick={addSubject} style={styles.addBtn}><Plus size={16} color="white" /></button>
+                        <div style={{ display: 'flex', gap: '4px', alignItems: 'center', width: '100%', overflow: 'hidden' }}>
+                        <input 
+                            style={styles.newSubInput} 
+                            placeholder="New Subject..." 
+                            value={subjectInput} 
+                            onChange={(e) => setSubjectInput(e.target.value)} 
+                            onKeyDown={(e) => e.key === 'Enter' && addSubject()}
+                        />
+                        <button onClick={(e) => { e.stopPropagation(); addSubject(); }} style={styles.addBtn}>
+                          <Plus size={28} strokeWidth={3.5} color="white" />
+                        </button>
                         </div>
                     </div>
                     </div>
@@ -407,24 +449,42 @@ const Dashboard: React.FC = () => {
           {currentView === 'library' && (
             <>
               <div style={styles.welcomeRow}>
-                <div><h1 style={styles.welcomeTitle}>My Library</h1></div>
+                <div>
+                  <h1 style={styles.welcomeTitle}>My Library</h1>
+                  <p style={{color: '#64748b', margin: 0}}>Browse and manage your entire study collection.</p>
+                </div>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <button style={styles.iconBtn} onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
                     {viewMode === 'grid' ? <List size={18} /> : <Grid size={18} />}
                   </button>
-                  <button style={styles.uploadBtnMain} onClick={() => fileInputRef.current?.click()}><Plus size={18} /> Add New File</button>
+                  <button style={styles.uploadBtnMain} onClick={() => fileInputRef.current?.click()}>
+                    <Plus size={18} /> Add New File
+                  </button>
                 </div>
               </div>
+
               <div style={styles.filesContainer}>
-                {files.length === 0 ? (<div style={styles.emptyFiles}>Your library is empty.</div>) : (
+                {files.length === 0 ? (
+                  <div style={styles.emptyFiles}>Your library is empty.</div>
+                ) : (
                   files.filter(f => f.name.toLowerCase().includes(searchTerm.toLowerCase())).map(f => (
                     <div key={f.id} style={styles.fileRow} onClick={() => setPreviewFile(f)}>
                       <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
                         <div style={styles.fileIcon}><FileText size={18} color="#2563eb" /></div>
-                        <div><div style={{fontWeight:'700', fontSize:'14px'}}>{f.name}</div><div style={{fontSize:'12px', color:'#94a3b8'}}>{f.subjectName} • {f.date}</div></div>
+                        <div>
+                          <div style={{fontWeight:'700', fontSize:'14px'}}>{f.name}</div>
+                          <div style={{fontSize:'12px', color:'#94a3b8'}}>{f.subjectName} • {f.date}</div>
+                        </div>
                       </div>
                       <div style={{display:'flex', gap:'15px', alignItems:'center'}}>
-                        <Star size={18} color={f.isFavorite ? "#f59e0b" : "#cbd5e1"} fill={f.isFavorite ? "#f59e0b" : "transparent"} cursor="pointer" onClick={(e) => { e.stopPropagation(); toggleFavorite(f.id); }} />
+                        <Star 
+                          size={18} 
+                          color={f.isFavorite ? "#f59e0b" : "#cbd5e1"} 
+                          fill={f.isFavorite ? "#f59e0b" : "transparent"}
+                          cursor="pointer"
+                          onClick={(e) => { e.stopPropagation(); toggleFavorite(f.id); }}
+                        />
+                        <Download size={18} color="#94a3b8" cursor="pointer" />
                         <Trash2 size={18} color="#ef4444" cursor="pointer" onClick={(e) => { e.stopPropagation(); deleteFile(f.id, f.name); }} />
                       </div>
                     </div>
@@ -434,30 +494,159 @@ const Dashboard: React.FC = () => {
             </>
           )}
 
+          {currentView === 'favorites' && (
+            <>
+              <div style={styles.welcomeRow}>
+                <div>
+                  <h1 style={styles.welcomeTitle}>Favorites</h1>
+                  <p style={{color: '#64748b', margin: 0}}>Quick access to your most important materials.</p>
+                </div>
+              </div>
+              <div style={styles.filesContainer}>
+                {files.filter(f => f.isFavorite).length === 0 ? (
+                  <div style={styles.emptyFiles}>No favorites yet. Star a file to see it here!</div>
+                ) : (
+                  files.filter(f => f.isFavorite).map(f => (
+                    <div key={f.id} style={styles.fileRow} onClick={() => setPreviewFile(f)}>
+                      <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
+                        <div style={styles.fileIcon}>⭐</div>
+                        <div>
+                          <div style={{fontWeight:'700', fontSize:'14px'}}>{f.name}</div>
+                          <div style={{fontSize:'12px', color:'#94a3b8'}}>{f.subjectName} • {f.date}</div>
+                        </div>
+                      </div>
+                      <Star 
+                        size={18} 
+                        color="#f59e0b" 
+                        fill="#f59e0b"
+                        cursor="pointer"
+                        onClick={(e) => { e.stopPropagation(); toggleFavorite(f.id); }}
+                      />
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
+          )}
+
+          {currentView === 'analytics' && (
+            <>
+              <div style={styles.welcomeRow}>
+                <div>
+                  <h1 style={styles.welcomeTitle}>Analytics</h1>
+                  <p style={{color: '#64748b', margin: 0}}>Insights into your study habits and storage.</p>
+                </div>
+              </div>
+              <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'24px'}}>
+                 <div style={styles.analyticsCard}>
+                    <h3 style={{margin:'0 0 20px 0', fontSize:'16px'}}>Files per Subject</h3>
+                    {subjects.map(s => (
+                      <div key={s.name} style={{marginBottom:'15px'}}>
+                        <div style={{display:'flex', justifyContent:'space-between', fontSize:'12px', marginBottom:'5px'}}>
+                          <span>{s.name}</span>
+                          <span>{files.filter(f => f.subjectName === s.name).length} files</span>
+                        </div>
+                        <div style={{width:'100%', height:'8px', background:'#f1f5f9', borderRadius:'4px'}}>
+                          <div style={{
+                            width: `${(files.filter(f => f.subjectName === s.name).length / (files.length || 1)) * 100}%`,
+                            height:'100%', background: s.color, borderRadius:'4px'
+                          }} />
+                        </div>
+                      </div>
+                    ))}
+                 </div>
+                 <div style={styles.analyticsCard}>
+                    <h3 style={{margin:'0 0 20px 0', fontSize:'16px'}}>Storage Usage</h3>
+                    <div style={{textAlign:'center', padding:'20px 0'}}>
+                        <div style={{fontSize:'48px', fontWeight:'800', color:'#2563eb'}}>{(files.length * 0.2).toFixed(1)}MB</div>
+                        <div style={{color:'#64748b', fontSize:'14px'}}>of 500MB used</div>
+                    </div>
+                 </div>
+              </div>
+            </>
+          )}
+
           {currentView === 'settings' && (
             <>
-              <div style={styles.sectionHeader}><h2 style={styles.sectionTitle}>Settings</h2></div>
+              <div style={styles.sectionHeader}>
+                <h2 style={styles.sectionTitle}>Settings</h2>
+              </div>
+              
               <div style={styles.settingsGroup}>
                 <div style={styles.settingsItem}>
                   <div style={{display:'flex', gap:'12px', alignItems:'center', width: '100%'}}>
                     <User size={20} color="#64748b" />
                     <div style={{flex: 1}}>
                       <div style={{fontWeight:'700'}}>Profile Name</div>
-                      <input style={styles.settingsInput} value={userName} onChange={(e) => setUserName(e.target.value)} />
+                      <input 
+                        style={styles.settingsInput} 
+                        value={userName} 
+                        onChange={(e) => setUserName(e.target.value)} 
+                      />
                     </div>
                   </div>
                 </div>
+
+                <div style={styles.settingsItem}>
+                  <div style={{display:'flex', gap:'12px', alignItems:'center', width: '100%'}}>
+                    <FileText size={20} color="#64748b" />
+                    <div style={{flex: 1}}>
+                      <div style={{fontWeight:'700'}}>Email Address</div>
+                      <input 
+                        style={styles.settingsInput} 
+                        type="email"
+                        value={userEmail} 
+                        onChange={(e) => setUserEmail(e.target.value)} 
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div style={styles.settingsItem}>
                   <div style={{display:'flex', gap:'12px', alignItems:'center', width: '100%'}}>
                     <Shield size={20} color="#64748b" />
                     <div style={{flex: 1}}>
                       <div style={{fontWeight:'700'}}>Password</div>
-                      <input style={styles.settingsInput} type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+                      <input 
+                        style={styles.settingsInput} 
+                        type="password"
+                        value={userPassword} 
+                        onChange={(e) => setUserPassword(e.target.value)} 
+                      />
                     </div>
                   </div>
                 </div>
+
                 <div style={{padding: '20px 24px', display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #f1f5f9'}}>
-                  <button onClick={saveSettings} style={styles.saveChangesBtn}>Save Changes</button>
+                  <button 
+                    onClick={saveSettings}
+                    style={{
+                      padding: '10px 24px', 
+                      backgroundColor: '#2563eb', 
+                      color: 'white', 
+                      border: 'none', 
+                      borderRadius: '10px', 
+                      fontWeight: '700', 
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+
+              <div style={styles.settingsGroup}>
+                <div style={styles.settingsItem}>
+                  <div style={{display:'flex', gap:'12px', alignItems:'center'}}>
+                    <Bell size={20} color="#64748b"/> 
+                    <span>Notifications</span>
+                  </div>
+                </div>
+                <div style={styles.settingsItem}>
+                  <div style={{display:'flex', gap:'12px', alignItems:'center'}}>
+                    <Shield size={20} color="#64748b"/> 
+                    <span>Privacy & Security</span>
+                  </div>
                 </div>
               </div>
             </>
@@ -476,13 +665,15 @@ const Dashboard: React.FC = () => {
                 <div><div style={styles.statVal}>{subjects.length}</div><div style={styles.statLabel}>Folders</div></div>
             </div>
         </div>
+
         <div style={styles.streakCard}>
             <Zap size={20} color="#f59e0b" fill="#f59e0b" />
             <div>
-                <div style={{fontWeight:'700', fontSize:'14px'}}>Study Streak</div>
+              <div style={{fontWeight:'700', fontSize:'14px'}}>Study Streak</div>
                 <div style={{fontSize:'11px', color:'#92400e'}}>Upload daily to keep it!</div>
             </div>
         </div>
+
         <div style={{marginTop: '10px'}}>
             <h3 style={styles.activityHeader}>LIVE ACTIVITY</h3>
             <div style={styles.timeline}>
@@ -496,6 +687,7 @@ const Dashboard: React.FC = () => {
                 ))}
             </div>
         </div>
+
         <div style={styles.proBanner}>
             <BookOpen size={20} color="white" />
             <div style={{color:'white', fontSize:'12px', fontWeight:'600'}}>Ready for exams?</div>
@@ -537,9 +729,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   colorPickerRow: { display: 'flex', gap: '8px', marginBottom: '15px' },
   colorDot: { width: '16px', height: '16px', borderRadius: '50%', cursor: 'pointer' },
   newSubInput: { border: 'none', borderBottom: '1px solid #e2e8f0', background: 'transparent', fontSize: '14px', outline: 'none', flex: 1, padding: '5px 0' },
-  addBtn: { width: '28px', height: '28px', borderRadius: '14px', backgroundColor: '#2563eb', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  addBtn: { width: '20px', height: '20px', borderRadius: '16px', backgroundColor: '#2563eb', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 0 },
   filesContainer: { backgroundColor: '#fff', borderRadius: '20px', border: '1px solid #eef2f6' },
-  fileRow: { padding: '18px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor:'pointer' },
+  fileRow: { padding: '18px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor:'pointer', transition:'background 0.2s' },
   emptyFiles: { padding: '40px', textAlign: 'center', color: '#94a3b8', fontSize: '14px' },
   fileIcon: { width: '36px', height: '36px', backgroundColor: '#f1f5f9', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' },
   menuPop: { position: 'absolute', right: 0, top: '30px', backgroundColor: 'white', border: '1px solid #e2e8f0', padding: '8px', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', zIndex: 100, minWidth: '150px' },
@@ -558,10 +750,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   proBanner: { marginTop: 'auto', padding: '24px', backgroundColor: '#0f172a', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', textAlign: 'center' },
   proBtn: { width: '100%', padding: '12px', backgroundColor: '#2563eb', color: 'white', border: 'none', borderRadius: '12px', fontWeight: '700', fontSize: '12px', cursor: 'pointer' },
   iconBtn: { padding: '12px', backgroundColor: '#f1f5f9', border: 'none', borderRadius: '12px', cursor: 'pointer', color: '#64748b', display: 'flex', alignItems: 'center' },
+  analyticsCard: { padding: '24px', backgroundColor: '#fff', borderRadius: '20px', border: '1px solid #eef2f6' },
+  settingsGroup: { backgroundColor: '#fff', borderRadius: '20px', border: '1px solid #eef2f6', overflow: 'hidden' },
+  settingsItem: { padding: '20px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
   settingsInput: { border: '1px solid #e2e8f0', borderRadius: '8px', padding: '6px 12px', fontSize: '14px', marginTop: '5px', outline: 'none' },
-  saveChangesBtn: { padding: '10px 24px', backgroundColor: '#2563eb', color: 'white', border: 'none', borderRadius: '10px', fontWeight: '700', cursor: 'pointer' },
-  loginInput: { padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none', fontSize: '15px' },
-  loginSubmitBtn: { padding: '16px', backgroundColor: '#9333ea', color: 'white', border: 'none', borderRadius: '12px', fontWeight: '700', cursor: 'pointer', fontSize: '16px', boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)' },
   modalOverlay: { position: 'fixed', top:0, left:0, width:'100vw', height:'100vh', backgroundColor:'rgba(15,23,42,0.85)', zIndex: 1000, display:'flex', alignItems:'center', justifyContent:'center' },
   modalContent: { backgroundColor:'#fff', width:'85%', height:'85%', borderRadius:'24px', display:'flex', flexDirection:'column', boxShadow:'0 25px 50px -12px rgba(0,0,0,0.5)' },
   modalHeader: { padding:'20px 25px', borderBottom:'1px solid #f1f5f9', display:'flex', justifyContent:'space-between', alignItems:'center' },
@@ -574,3 +766,5 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
+
