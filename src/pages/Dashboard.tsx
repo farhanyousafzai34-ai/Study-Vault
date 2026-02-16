@@ -37,12 +37,41 @@ const Dashboard: React.FC = () => {
   const [subjectMenuId, setSubjectMenuId] = useState<string | null>(null);
   
   // Settings States (Persistent)
-  const [userName, setUserName] = useState(() => localStorage.getItem('profileName') || 'Farhan');
-  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('userEmail') || 'farhan@example.com');
-  const [userPassword, setUserPassword] = useState(() => localStorage.getItem('userPassword') || '1234');
+  // --- AUTHENTICATION STATES ---
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
-  const [darkMode, setDarkMode] = useState(false);
-
+  const [isSignUp, setIsSignUp] = useState(false); // New: Controls if we see Login or Sign Up
+  const [emailInput, setEmailInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [nameInput, setNameInput] = useState('');
+  
+  // Persistent profile data
+  const [userName, setUserName] = useState(() => localStorage.getItem('profileName') || 'User');
+  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('userEmail') || '');
+  const [userPassword, setUserPassword] = useState(() => localStorage.getItem('userPassword') || '');
+// This function handles both Creating Account and Logging In
+  const handleAuthAction = () => {
+    if (isSignUp) {
+      if (emailInput && passwordInput && nameInput) {
+        localStorage.setItem('userEmail', emailInput);
+        localStorage.setItem('userPassword', passwordInput);
+        localStorage.setItem('profileName', nameInput);
+        setUserName(nameInput);
+        alert('Account Created! Now please login.');
+        setIsSignUp(false); // Switch back to login view
+      } else {
+        alert('Please fill in all fields');
+      }
+    } else {
+      const savedEmail = localStorage.getItem('userEmail');
+      const savedPass = localStorage.getItem('userPassword');
+      if (emailInput === savedEmail && passwordInput === savedPass) {
+        localStorage.setItem('isLoggedIn', 'true');
+        setIsLoggedIn(true);
+      } else {
+        alert('Invalid Credentials. Have you created an account?');
+      }
+    }
+  };
   const saveSettings = () => {
     localStorage.setItem('profileName', userName);
     localStorage.setItem('userEmail', userEmail);
@@ -172,34 +201,51 @@ const Dashboard: React.FC = () => {
   if (!isLoggedIn) {
     return (
       <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        height: '100vh', 
-        width: '100vw',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw',
         backgroundImage: 'url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")', 
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: '"Inter", sans-serif' 
+        backgroundSize: 'cover', backgroundPosition: 'center', fontFamily: '"Inter", sans-serif' 
       }}>
-        {/* Glassmorphism Card */}
         <div style={{ 
-          backgroundColor: 'rgba(255, 255, 255, 0.05)', 
-          backdropFilter: 'blur(20px)', 
-          WebkitBackdropFilter: 'blur(20px)',
-          padding: '60px 40px', 
-          borderRadius: '24px', 
-          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8)', 
-          width: '400px', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '25px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          textAlign: 'center'
+          backgroundColor: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)',
+          padding: '60px 40px', borderRadius: '24px', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8)', 
+          width: '400px', display: 'flex', flexDirection: 'column', gap: '25px', border: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center'
         }}>
-          <h1 style={{ color: 'white', fontSize: '42px', marginBottom: '10px', fontWeight: '700', letterSpacing: '-1px' }}>Login</h1>
+          <h1 style={{ color: 'white', fontSize: '42px', fontWeight: '700' }}>{isSignUp ? 'Sign Up' : 'Login'}</h1>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            {isSignUp && (
+              <input 
+                style={styles.loginInput} placeholder="Full Name" 
+                value={nameInput} onChange={(e) => setNameInput(e.target.value)} 
+              />
+            )}
+            <input 
+              style={styles.loginInput} placeholder="Email" 
+              value={emailInput} onChange={(e) => setEmailInput(e.target.value)} 
+            />
+            <input 
+              style={styles.loginInput} type="password" placeholder="Password" 
+              value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} 
+            />
+          </div>
+
+          <button style={styles.loginSubmitBtn} onClick={handleAuthAction}>
+            {isSignUp ? 'Create Account' : 'Sign In'}
+          </button>
+
+          <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginTop: '10px' }}>
+            {isSignUp ? "Already have an account?" : "New here?"}
+            <span 
+              style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline', marginLeft: '5px' }}
+              onClick={() => setIsSignUp(!isSignUp)}
+            >
+              {isSignUp ? 'Sign In' : 'Create Account'}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
             <input 
               style={{ 
                 padding: '16px', 
@@ -766,4 +812,5 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
 
