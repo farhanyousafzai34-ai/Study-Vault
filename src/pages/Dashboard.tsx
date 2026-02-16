@@ -177,81 +177,126 @@ const Dashboard: React.FC = () => {
 
   // --- LOGIN / SIGNUP MODAL ---
   if (!isLoggedIn) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        height: '100vh', 
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
         width: '100vw',
-        backgroundImage: 'url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")', 
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        fontFamily: '"Inter", sans-serif' 
-      }}>
-        {/* Glassmorphism Card */}
-        <div style={{ 
-          backgroundColor: 'rgba(255, 255, 255, 0.05)', 
-          backdropFilter: 'blur(20px)', 
+        fontFamily: '"Inter", sans-serif',
+      }}
+    >
+      {/* Centered Glass Card */}
+      <div
+        style={{
+          width: '800px',
+          height: '500px',
+          borderRadius: '24px',
+          backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          padding: '60px 40px', 
-          borderRadius: '24px', 
-          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8)', 
-          width: '400px', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '25px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          textAlign: 'center'
-        }}>
-          <h1 style={{ color: 'white', fontSize: '42px', marginBottom: '10px', fontWeight: '700', letterSpacing: '-1px' }}>
-            {authMode === 'login' ? 'Login' : 'Create Account'}
-          </h1>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <input 
-              style={{ 
-                padding: '16px', 
-                borderRadius: '12px', 
-                border: '1px solid rgba(255,255,255,0.1)', 
-                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                color: 'white', 
-                outline: 'none',
-                fontSize: '15px'
-              }} 
-              placeholder="Username or Email"
-              value={authEmail}
-              onChange={(e) => setAuthEmail(e.target.value)}
-            />
-            <input 
-              style={{ 
-                padding: '16px', 
-                borderRadius: '12px', 
-                border: '1px solid rgba(255,255,255,0.1)', 
-                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                color: 'white', 
-                outline: 'none',
-                fontSize: '15px'
-              }} 
-              type="password" 
-              placeholder="Password" 
-              value={authPassword}
-              onChange={(e) => setAuthPassword(e.target.value)}
-            />
-          </div>
-
-          <button 
-            style={{ 
-              padding: '16px', 
-              backgroundColor: '#9333ea', // Deep Purple
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '12px', 
-              fontWeight: '700', 
-              cursor: 'pointer',
-              fontSize: '16px',
-              boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)'
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          display: 'flex',
+          overflow: 'hidden',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.25)',
+        }}
+      >
+        {/* Left Side */}
+        <div
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(37, 99, 235, 0.85)',
+            color: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '40px 20px',
+            textAlign: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '16px',
+              backgroundColor: 'white',
+              color: '#2563eb',
+              fontWeight: '800',
+              fontSize: '36px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '20px',
             }}
+          >
+            S
+          </div>
+          <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '15px' }}>Study Vault</h1>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', maxWidth: '200px' }}>
+            Organise Subjects, Upload Notes, and keep every resource in one source, focused Workspace.
+          </p>
+        </div>
+
+        {/* Right Side */}
+        <div
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: '40px 50px',
+          }}
+        >
+          <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
+            Welcome Back
+          </h2>
+          <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '30px' }}>Sign in to your Account</p>
+
+          {/* Email */}
+          <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Email</label>
+          <input
+            type="email"
+            value={authEmail}
+            onChange={(e) => setAuthEmail(e.target.value)}
+            style={{
+              padding: '14px',
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              marginBottom: '20px',
+              width: '100%',
+              outline: 'none',
+              fontSize: '14px',
+            }}
+            placeholder="Enter your email"
+          />
+
+          {/* Password */}
+          <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Password</label>
+          <input
+            type="password"
+            value={authPassword}
+            onChange={(e) => setAuthPassword(e.target.value)}
+            style={{
+              padding: '14px',
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              marginBottom: '25px',
+              width: '100%',
+              outline: 'none',
+              fontSize: '14px',
+            }}
+            placeholder="Enter your password"
+          />
+
+          {/* Sign In Button */}
+          <button
             onClick={() => {
               if (authMode === 'login') {
                 if (authEmail === userEmail && authPassword === userPassword) {
@@ -272,37 +317,52 @@ const Dashboard: React.FC = () => {
                 alert('Account Created Successfully!');
               }
             }}
+            style={{
+              width: '100%',
+              padding: '16px',
+              backgroundColor: '#2563eb',
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontWeight: '700',
+              fontSize: '16px',
+              cursor: 'pointer',
+              marginBottom: '20px',
+              boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)',
+            }}
           >
             {authMode === 'login' ? 'Sign In' : 'Create Account'}
           </button>
 
-          <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginTop: '10px' }}>
+          {/* Switch Mode */}
+          <p style={{ fontSize: '14px', textAlign: 'center', color: '#64748b' }}>
             {authMode === 'login' ? (
               <>
-                New here?{" "}
+                New to Study Vault?{' '}
                 <span
-                  style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
                   onClick={() => setAuthMode('signup')}
+                  style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
                 >
                   Create Account
                 </span>
               </>
             ) : (
               <>
-                Already have an account?{" "}
+                Already have an account?{' '}
                 <span
-                  style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
                   onClick={() => setAuthMode('login')}
+                  style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
                 >
                   Sign In
                 </span>
               </>
             )}
-          </div>
+          </p>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div style={styles.appContainer}>
@@ -806,3 +866,4 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
