@@ -176,282 +176,292 @@ const Dashboard: React.FC = () => {
   console.log(setDarkMode);
 
   // --- LOGIN / SIGNUP MODAL ---
-  if (!isLoggedIn) {
-  return (
+  {!isLoggedIn && (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      width: '100vw',
+      backgroundImage:
+        'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      fontFamily: '"Inter", sans-serif',
+      overflow: 'hidden',
+      position: 'relative',
+    }}
+  >
+    <canvas
+      id="particles"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+      }}
+    ></canvas>
+
     <div
       style={{
+        width: '800px',
+        maxWidth: '95%',
+        height: '500px',
+        borderRadius: '24px',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        width: '100vw',
-        backgroundImage:
-          'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: '"Inter", sans-serif',
         overflow: 'hidden',
-        position: 'relative',
+        boxShadow: '0 10px 40px rgba(0,0,0,0.25)',
       }}
     >
-      <canvas
-        id="particles"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-        }}
-      ></canvas>
-
+      {/* Left Side */}
       <div
         style={{
-          width: '800px',
-          maxWidth: '95%',
-          height: '500px',
-          borderRadius: '24px',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          flex: 1,
+          backgroundColor: 'rgba(37, 99, 235, 0.85)',
+          color: 'white',
           display: 'flex',
-          overflow: 'hidden',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.25)',
-          animation: 'fadeInUp 0.8s forwards, floatCard 6s ease-in-out infinite alternate',
-          transformOrigin: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '40px 20px',
+          textAlign: 'center',
         }}
       >
-        {/* Left Side */}
         <div
           style={{
-            flex: 1,
-            backgroundColor: 'rgba(37, 99, 235, 0.85)',
-            color: 'white',
+            width: '80px',
+            height: '80px',
+            borderRadius: '16px',
+            backgroundColor: 'white',
+            color: '#2563eb',
+            fontWeight: '800',
+            fontSize: '36px',
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
             alignItems: 'center',
-            padding: '40px 20px',
-            textAlign: 'center',
-          }}
-          className="leftSide"
-        >
-          <div
-            style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '16px',
-              backgroundColor: 'white',
-              color: '#2563eb',
-              fontWeight: '800',
-              fontSize: '36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '20px',
-              animation: 'floatLogo 6s ease-in-out infinite alternate',
-            }}
-          >
-            S
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '15px' }}>Study Vault</h1>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', maxWidth: '200px' }}>
-            Organise Subjects, Upload Notes, and keep every resource in one source, focused Workspace.
-          </p>
-        </div>
-
-        {/* Right Side */}
-        <div
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            display: 'flex',
-            flexDirection: 'column',
             justifyContent: 'center',
-            padding: '40px 50px',
+            marginBottom: '20px',
           }}
-          className="rightSide"
         >
-          <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
-            Welcome Back
-          </h2>
-          <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '30px' }}>Sign in to your Account</p>
+          S
+        </div>
+        <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '15px' }}>Study Vault</h1>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', maxWidth: '200px' }}>
+          Organise Subjects, Upload Notes, and keep every resource in one source, focused Workspace.
+        </p>
+      </div>
 
-          <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Email</label>
-          <input
-            type="email"
-            value={authEmail}
-            onChange={(e) => setAuthEmail(e.target.value)}
-            style={{
-              padding: '14px',
-              borderRadius: '12px',
-              border: '1px solid #e2e8f0',
-              marginBottom: '20px',
-              width: '100%',
-              outline: 'none',
-              fontSize: '14px',
-              transition: '0.3s all',
-            }}
-            placeholder="Enter your email"
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#2563eb')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
-          />
+      {/* Right Side */}
+      <div
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '40px 50px',
+        }}
+      >
+        {authMode === 'login' && (
+          <>
+            <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
+              Welcome Back
+            </h2>
+            <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '30px' }}>Sign in to your Account</p>
 
-          <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Password</label>
-          <input
-            type="password"
-            value={authPassword}
-            onChange={(e) => setAuthPassword(e.target.value)}
-            style={{
-              padding: '14px',
-              borderRadius: '12px',
-              border: '1px solid #e2e8f0',
-              marginBottom: '25px',
-              width: '100%',
-              outline: 'none',
-              fontSize: '14px',
-              transition: '0.3s all',
-            }}
-            placeholder="Enter your password"
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#2563eb')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
-          />
+            <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Email</label>
+            <input
+              type="email"
+              value={authEmail}
+              onChange={(e) => setAuthEmail(e.target.value)}
+              placeholder="Enter your email"
+              style={{
+                padding: '14px',
+                borderRadius: '12px',
+                border: '1px solid #e2e8f0',
+                marginBottom: '20px',
+                width: '100%',
+                outline: 'none',
+                fontSize: '14px',
+              }}
+            />
 
-          <button
-            onClick={() => {
-              if (authMode === 'login') {
+            <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Password</label>
+            <input
+              type="password"
+              value={authPassword}
+              onChange={(e) => setAuthPassword(e.target.value)}
+              placeholder="Enter your password"
+              style={{
+                padding: '14px',
+                borderRadius: '12px',
+                border: '1px solid #e2e8f0',
+                marginBottom: '25px',
+                width: '100%',
+                outline: 'none',
+                fontSize: '14px',
+              }}
+            />
+
+            <button
+              onClick={() => {
                 if (authEmail === userEmail && authPassword === userPassword) {
                   localStorage.setItem('isLoggedIn', 'true');
                   setIsLoggedIn(true);
                 } else {
                   alert('Access Denied: Invalid Credentials');
                 }
-              } else {
+              }}
+              style={{
+                width: '100%',
+                padding: '16px',
+                backgroundColor: '#2563eb',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontWeight: '700',
+                fontSize: '16px',
+                cursor: 'pointer',
+                marginBottom: '20px',
+              }}
+            >
+              Sign In
+            </button>
+
+            <p style={{ fontSize: '14px', textAlign: 'center', color: '#64748b' }}>
+              New to Study Vault?{' '}
+              <span
+                onClick={() => setAuthMode('signup')}
+                style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
+              >
+                Create Account
+              </span>
+            </p>
+          </>
+        )}
+
+        {/* Signup Modal */}
+        {authMode === 'signup' && (
+          <div style={{ textAlign: 'center' }}>
+            <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
+              Create Your Account
+            </h2>
+            <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '20px' }}>Sign up with</p>
+
+            <button
+              onClick={() => alert('Google Sign Up coming soon')}
+              style={{
+                width: '100%',
+                padding: '14px',
+                backgroundColor: '#db4437',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontWeight: '700',
+                marginBottom: '12px',
+                cursor: 'pointer',
+              }}
+            >
+              Continue with Google
+            </button>
+
+            <button
+              onClick={() => alert('Facebook Sign Up coming soon')}
+              style={{
+                width: '100%',
+                padding: '14px',
+                backgroundColor: '#4267B2',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontWeight: '700',
+                marginBottom: '20px',
+                cursor: 'pointer',
+              }}
+            >
+              Continue with Facebook
+            </button>
+
+            <p style={{ margin: '15px 0', fontWeight: '600', color: '#64748b' }}>Or Sign Up Manually</p>
+
+            <input
+              type="email"
+              value={authEmail}
+              onChange={(e) => setAuthEmail(e.target.value)}
+              placeholder="Enter your email"
+              style={{
+                padding: '14px',
+                borderRadius: '12px',
+                border: '1px solid #e2e8f0',
+                marginBottom: '20px',
+                width: '100%',
+                outline: 'none',
+                fontSize: '14px',
+              }}
+            />
+
+            <input
+              type="password"
+              value={authPassword}
+              onChange={(e) => setAuthPassword(e.target.value)}
+              placeholder="Enter your password"
+              style={{
+                padding: '14px',
+                borderRadius: '12px',
+                border: '1px solid #e2e8f0',
+                marginBottom: '25px',
+                width: '100%',
+                outline: 'none',
+                fontSize: '14px',
+              }}
+            />
+
+            <button
+              onClick={() => {
                 setUserEmail(authEmail);
                 setUserPassword(authPassword);
-
                 localStorage.setItem('userEmail', authEmail);
                 localStorage.setItem('userPassword', authPassword);
                 localStorage.setItem('isLoggedIn', 'true');
-
                 setIsLoggedIn(true);
                 alert('Account Created Successfully!');
-              }
-            }}
-            style={{
-              width: '100%',
-              padding: '16px',
-              backgroundColor: '#2563eb',
-              color: 'white',
-              border: 'none',
-              borderRadius: '12px',
-              fontWeight: '700',
-              fontSize: '16px',
-              cursor: 'pointer',
-              marginBottom: '20px',
-              boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#1e40af';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#2563eb';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            {authMode === 'login' ? 'Sign In' : 'Create Account'}
-          </button>
+              }}
+              style={{
+                width: '100%',
+                padding: '16px',
+                backgroundColor: '#2563eb',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontWeight: '700',
+                fontSize: '16px',
+                cursor: 'pointer',
+                marginBottom: '20px',
+              }}
+            >
+              Sign Up
+            </button>
 
-          <p style={{ fontSize: '14px', textAlign: 'center', color: '#64748b' }}>
-            {authMode === 'login' ? (
-              <>
-                New to Study Vault?{' '}
-                <span
-                  onClick={() => setAuthMode('signup')}
-                  style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
-                >
-                  Create Account
-                </span>
-              </>
-            ) : (
-              <>
-                Already have an account?{' '}
-                <span
-                  onClick={() => setAuthMode('login')}
-                  style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
-                >
-                  Sign In
-                </span>
-              </>
-            )}
-          </p>
-        </div>
+            <p style={{ fontSize: '14px', textAlign: 'center', color: '#64748b' }}>
+              Already have an account?{' '}
+              <span
+                onClick={() => setAuthMode('login')}
+                style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
+              >
+                Sign In
+              </span>
+            </p>
+          </div>
+        )}
       </div>
-
-      {/* Responsive CSS */}
-      <style>
-        {`
-          @media (max-width: 768px) {
-            .leftSide { display: none; }
-            div[style*="flex"] { flex-direction: column; height: auto; padding: 20px; }
-            .rightSide { width: 100%; padding: 20px; }
-          }
-        `}
-      </style>
     </div>
-  );
-}
+  )}
 
-          {currentView === 'library' && (
-            <>
-              <div style={styles.welcomeRow}>
-                <div>
-                  <h1 style={styles.welcomeTitle}>My Library</h1>
-                  <p style={{color: '#64748b', margin: 0}}>Browse and manage your entire study collection.</p>
-                </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button style={styles.iconBtn} onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
-                    {viewMode === 'grid' ? <List size={18} /> : <Grid size={18} />}
-                  </button>
-                  <button style={styles.uploadBtnMain} onClick={() => fileInputRef.current?.click()}>
-                    <Plus size={18} /> Add New File
-                  </button>
-                </div>
-              </div>
-
-              <div style={styles.filesContainer}>
-                {files.length === 0 ? (
-                  <div style={styles.emptyFiles}>Your library is empty.</div>
-                ) : (
-                  files.filter(f => f.name.toLowerCase().includes(searchTerm.toLowerCase())).map(f => (
-                    <div key={f.id} style={styles.fileRow} onClick={() => setPreviewFile(f)}>
-                      <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
-                        <div style={styles.fileIcon}><FileText size={18} color="#2563eb" /></div>
-                        <div>
-                          <div style={{fontWeight:'700', fontSize:'14px'}}>{f.name}</div>
-                          <div style={{fontSize:'12px', color:'#94a3b8'}}>{f.subjectName} • {f.date}</div>
-                        </div>
-                      </div>
-                      <div style={{display:'flex', gap:'15px', alignItems:'center'}}>
-                        <Star 
-                          size={18} 
-                          color={f.isFavorite ? "#f59e0b" : "#cbd5e1"} 
-                          fill={f.isFavorite ? "#f59e0b" : "transparent"}
-                          cursor="pointer"
-                          onClick={(e) => { e.stopPropagation(); toggleFavorite(f.id); }}
-                        />
-                        <Download size={18} color="#94a3b8" cursor="pointer" />
-                        <Trash2 size={18} color="#ef4444" cursor="pointer" onClick={(e) => { e.stopPropagation(); deleteFile(f.id, f.name); }} />
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </>
-          )}
 
           {currentView === 'favorites' && (
             <>
@@ -725,6 +735,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
 
 
 
