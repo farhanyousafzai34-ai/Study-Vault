@@ -33,15 +33,15 @@ const Dashboard: React.FC = () => {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [subjectMenuId, setSubjectMenuId] = useState<string | null>(null);
   
-  // Settings States
-  // Settings States (Upgraded for Memory)
-  // Settings States (Upgraded for Memory)
+  // Settings States (Persistent)
   const [userName, setUserName] = useState(() => localStorage.getItem('profileName') || 'Farhan');
   const [userEmail, setUserEmail] = useState(() => localStorage.getItem('userEmail') || 'farhan@example.com');
   const [userPassword, setUserPassword] = useState(() => localStorage.getItem('userPassword') || '1234');
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
+  const [darkMode, setDarkMode] = useState(false);
 
   const saveSettings = () => {
     localStorage.setItem('profileName', userName);
@@ -166,7 +166,8 @@ const Dashboard: React.FC = () => {
         );
     }
   };
-
+  if (darkMode) console.log("Dark mode is enabled");
+  if (activeMenuId) console.log("Menu active for:", activeMenuId);
   if (!isLoggedIn) {
     return (
       <div style={{ 
@@ -762,6 +763,5 @@ const styles: { [key: string]: React.CSSProperties } = {
   previewPlaceholder: { display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'20px', textAlign:'center' },
   downloadLink: { padding:'12px 24px', backgroundColor:'#2563eb', color:'#fff', borderRadius:'12px', textDecoration:'none', fontWeight:'700', fontSize:'14px' }
 };
-
 
 export default Dashboard;
