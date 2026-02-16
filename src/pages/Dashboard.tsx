@@ -176,212 +176,363 @@ const Dashboard: React.FC = () => {
   console.log(setDarkMode);
 
   // --- LOGIN / SIGNUP MODAL ---
-  return (
-  <>
-    {!isLoggedIn ? (
-      <LoginSignupModal
-        authMode={authMode}
-        setAuthMode={setAuthMode}
-        authEmail={authEmail}
-        setAuthEmail={setAuthEmail}
-        authPassword={authPassword}
-        setAuthPassword={setAuthPassword}
-        userEmail={userEmail}
-        userPassword={userPassword}
-        setIsLoggedIn={setIsLoggedIn}
-        setUserEmail={setUserEmail}
-        setUserPassword={setUserPassword}
-      />
-    ) : (
-      <div style={styles.appContainer}>
-        {/* Your existing dashboard JSX */}
-      </div>
-    )}
-  </>
-);
-              placeholder="Enter your email"
-              style={{
-                padding: '14px',
-                borderRadius: '12px',
-                border: '1px solid #e2e8f0',
-                marginBottom: '20px',
-                width: '100%',
+  if (!isLoggedIn) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        height: '100vh', 
+        width: '100vw',
+        backgroundImage: 'url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        fontFamily: '"Inter", sans-serif' 
+      }}>
+        {/* Glassmorphism Card */}
+        <div style={{ 
+          backgroundColor: 'rgba(255, 255, 255, 0.05)', 
+          backdropFilter: 'blur(20px)', 
+          WebkitBackdropFilter: 'blur(20px)',
+          padding: '60px 40px', 
+          borderRadius: '24px', 
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8)', 
+          width: '400px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '25px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          textAlign: 'center'
+        }}>
+          <h1 style={{ color: 'white', fontSize: '42px', marginBottom: '10px', fontWeight: '700', letterSpacing: '-1px' }}>
+            {authMode === 'login' ? 'Login' : 'Create Account'}
+          </h1>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <input 
+              style={{ 
+                padding: '16px', 
+                borderRadius: '12px', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                color: 'white', 
                 outline: 'none',
-                fontSize: '14px',
-              }}
+                fontSize: '15px'
+              }} 
+              placeholder="Username or Email"
+              value={authEmail}
+              onChange={(e) => setAuthEmail(e.target.value)}
             />
-
-            <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Password</label>
-            <input
-              type="password"
+            <input 
+              style={{ 
+                padding: '16px', 
+                borderRadius: '12px', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                color: 'white', 
+                outline: 'none',
+                fontSize: '15px'
+              }} 
+              type="password" 
+              placeholder="Password" 
               value={authPassword}
               onChange={(e) => setAuthPassword(e.target.value)}
-              placeholder="Enter your password"
-              style={{
-                padding: '14px',
-                borderRadius: '12px',
-                border: '1px solid #e2e8f0',
-                marginBottom: '25px',
-                width: '100%',
-                outline: 'none',
-                fontSize: '14px',
-              }}
             />
+          </div>
 
-            <button
-              onClick={() => {
+          <button 
+            style={{ 
+              padding: '16px', 
+              backgroundColor: '#9333ea', // Deep Purple
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '12px', 
+              fontWeight: '700', 
+              cursor: 'pointer',
+              fontSize: '16px',
+              boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)'
+            }}
+            onClick={() => {
+              if (authMode === 'login') {
                 if (authEmail === userEmail && authPassword === userPassword) {
                   localStorage.setItem('isLoggedIn', 'true');
                   setIsLoggedIn(true);
                 } else {
                   alert('Access Denied: Invalid Credentials');
                 }
-              }}
-              style={{
-                width: '100%',
-                padding: '16px',
-                backgroundColor: '#2563eb',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: '700',
-                fontSize: '16px',
-                cursor: 'pointer',
-                marginBottom: '20px',
-              }}
-            >
-              Sign In
-            </button>
-
-            <p style={{ fontSize: '14px', textAlign: 'center', color: '#64748b' }}>
-              New to Study Vault?{' '}
-              <span
-                onClick={() => setAuthMode('signup')}
-                style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
-              >
-                Create Account
-              </span>
-            </p>
-          </>
-        )}
-
-        {/* Signup Modal */}
-        {authMode === 'signup' && (
-          <div style={{ textAlign: 'center' }}>
-            <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
-              Create Your Account
-            </h2>
-            <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '20px' }}>Sign up with</p>
-
-            <button
-              onClick={() => alert('Google Sign Up coming soon')}
-              style={{
-                width: '100%',
-                padding: '14px',
-                backgroundColor: '#db4437',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: '700',
-                marginBottom: '12px',
-                cursor: 'pointer',
-              }}
-            >
-              Continue with Google
-            </button>
-
-            <button
-              onClick={() => alert('Facebook Sign Up coming soon')}
-              style={{
-                width: '100%',
-                padding: '14px',
-                backgroundColor: '#4267B2',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: '700',
-                marginBottom: '20px',
-                cursor: 'pointer',
-              }}
-            >
-              Continue with Facebook
-            </button>
-
-            <p style={{ margin: '15px 0', fontWeight: '600', color: '#64748b' }}>Or Sign Up Manually</p>
-
-            <input
-              type="email"
-              value={authEmail}
-              onChange={(e) => setAuthEmail(e.target.value)}
-              placeholder="Enter your email"
-              style={{
-                padding: '14px',
-                borderRadius: '12px',
-                border: '1px solid #e2e8f0',
-                marginBottom: '20px',
-                width: '100%',
-                outline: 'none',
-                fontSize: '14px',
-              }}
-            />
-
-            <input
-              type="password"
-              value={authPassword}
-              onChange={(e) => setAuthPassword(e.target.value)}
-              placeholder="Enter your password"
-              style={{
-                padding: '14px',
-                borderRadius: '12px',
-                border: '1px solid #e2e8f0',
-                marginBottom: '25px',
-                width: '100%',
-                outline: 'none',
-                fontSize: '14px',
-              }}
-            />
-
-            <button
-              onClick={() => {
+              } else {
                 setUserEmail(authEmail);
                 setUserPassword(authPassword);
+
                 localStorage.setItem('userEmail', authEmail);
                 localStorage.setItem('userPassword', authPassword);
                 localStorage.setItem('isLoggedIn', 'true');
+
                 setIsLoggedIn(true);
                 alert('Account Created Successfully!');
-              }}
-              style={{
-                width: '100%',
-                padding: '16px',
-                backgroundColor: '#2563eb',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: '700',
-                fontSize: '16px',
-                cursor: 'pointer',
-                marginBottom: '20px',
-              }}
-            >
-              Sign Up
-            </button>
+              }
+            }}
+          >
+            {authMode === 'login' ? 'Sign In' : 'Create Account'}
+          </button>
 
-            <p style={{ fontSize: '14px', textAlign: 'center', color: '#64748b' }}>
-              Already have an account?{' '}
-              <span
-                onClick={() => setAuthMode('login')}
-                style={{ color: '#2563eb', cursor: 'pointer', fontWeight: '700', textDecoration: 'underline' }}
-              >
-                Sign In
-              </span>
-            </p>
+          <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginTop: '10px' }}>
+            {authMode === 'login' ? (
+              <>
+                New here?{" "}
+                <span
+                  style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+                  onClick={() => setAuthMode('signup')}
+                >
+                  Create Account
+                </span>
+              </>
+            ) : (
+              <>
+                Already have an account?{" "}
+                <span
+                  style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+                  onClick={() => setAuthMode('login')}
+                >
+                  Sign In
+                </span>
+              </>
+            )}
           </div>
-        )}
+        </div>
       </div>
-    </div>
-  )}
+    );
+  }
 
+  return (
+    <div style={styles.appContainer}>
+      <input type="file" ref={fileInputRef} onChange={handleFileUpload} style={{ display: 'none' }} />
+
+      {/* --- PREVIEW MODAL --- */}
+      {previewFile && (
+        <div style={styles.modalOverlay} onClick={() => setPreviewFile(null)}>
+            <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
+                <div style={styles.modalHeader}>
+                    <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                        <FileText size={20} color="#2563eb" />
+                        <span style={{fontWeight:'700', color:'#1e293b'}}>{previewFile.name}</span>
+                    </div>
+                    <button style={styles.closeBtn} onClick={() => setPreviewFile(null)}><X size={20}/></button>
+                </div>
+                <div style={styles.modalBody}>
+                    {renderPreviewContent()}
+                </div>
+            </div>
+        </div>
+      )}
+
+      {/* --- SIDEBAR --- */}
+      <aside style={styles.sidebar}>
+        <div style={styles.logoSection}>
+          <div style={styles.logoIcon}>S</div>
+          <h2 style={styles.logoText}>StudyVault</h2>
+        </div>
+        
+        <nav style={styles.nav}>
+          <div style={styles.navLabel}>MAIN MENU</div>
+          <div style={currentView === 'dashboard' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('dashboard')}>
+            <LayoutDashboard size={18} /> Dashboard
+          </div>
+          <div style={currentView === 'library' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('library')}>
+            <Library size={18} /> My Library
+          </div>
+          
+          <div style={styles.navLabel}>PERSONAL</div>
+          <div style={currentView === 'favorites' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('favorites')}>
+            <Star size={18} /> Favorites
+          </div>
+          <div style={currentView === 'analytics' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('analytics')}>
+            <BarChart3 size={18} /> Analytics
+          </div>
+          <div style={currentView === 'settings' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('settings')}>
+            <Settings size={18} /> Settings
+          </div>
+        </nav>
+
+        <button onClick={handleSignOut} style={styles.signOutBtn}><LogOut size={16} /> Sign Out</button>
+      </aside>
+
+      {/* --- MAIN CONTENT --- */}
+      <main style={styles.mainScroll}>
+        <header style={styles.header}>
+          <div style={styles.searchContainer}>
+            <Search size={18} color="#94a3b8" />
+            <input 
+                placeholder="Search handouts, notes, or topics..." 
+                style={styles.headerSearch} 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </header>
+
+        <div style={styles.contentPadding}>
+          {currentView === 'dashboard' && (
+            <>
+              <div style={styles.welcomeRow}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    {selectedSubject && (
+                        <button onClick={() => setSelectedSubject(null)} style={styles.backBtn}>
+                            <ChevronLeft size={20} color="#64748b" />
+                        </button>
+                    )}
+                    <div>
+                        <h1 style={styles.welcomeTitle}>
+                            {selectedSubject ? selectedSubject : `Welcome back, ${userName}`}
+                        </h1>
+                        <p style={{color: '#64748b', margin: 0}}>
+                            {selectedSubject ? `Managing files in ${selectedSubject}` : "Here's what's happening with your study materials."}
+                        </p>
+                    </div>
+                </div>
+                <button style={styles.uploadBtnMain} onClick={() => fileInputRef.current?.click()}>
+                    <Upload size={18} /> {selectedSubject ? 'Upload to Folder' : 'Upload New'}
+                </button>
+              </div>
+              
+              {!selectedSubject && (
+                <section style={{ marginBottom: '40px' }}>
+                    <h2 style={styles.sectionTitle}>Your Subjects</h2>
+                    <div style={styles.subjectGrid}>
+                    {subjects.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase())).map((sub, i) => (
+                        <div key={i} style={styles.subjectCard} onClick={() => setSelectedSubject(sub.name)}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div style={{ ...styles.folderWrapper, backgroundColor: sub.color }}>
+                                <Folder size={20} fill="white" color="white" />
+                            </div>
+                            <div style={{ position: 'relative' }}>
+                                <MoreVertical 
+                                    size={18} 
+                                    color="#94a3b8" 
+                                    cursor="pointer" 
+                                    onClick={(e) => { e.stopPropagation(); setSubjectMenuId(sub.name); }} 
+                                />
+                                {subjectMenuId === sub.name && (
+                                    <div style={styles.menuPop}>
+                                        <div style={styles.menuItem} onClick={(e) => { e.stopPropagation(); deleteSubject(sub.name); }}>
+                                            <Trash2 size={14} /> Delete Folder
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <h3 style={styles.subCardTitle}>{sub.name}</h3>
+                        <p style={styles.subCardFiles}>{files.filter(f => f.subjectName === sub.name).length} files</p>
+                        </div>
+                    ))}
+
+                    <div style={styles.newSubjectCard} onClick={(e) => e.stopPropagation()}>
+                        <div style={styles.colorPickerRow}>
+                        {folderColors.map(c => (
+                            <div 
+                                key={c} 
+                                onClick={() => setSelectedColor(c)} 
+                                style={{...styles.colorDot, backgroundColor: c, border: selectedColor === c ? '2px solid #000' : 'none' }} 
+                            />
+                        ))}
+                        </div>
+                        <div style={{ display: 'flex', gap: '4px', alignItems: 'center', width: '100%', overflow: 'hidden' }}>
+                        <input 
+                            style={styles.newSubInput} 
+                            placeholder="New Subject..." 
+                            value={subjectInput} 
+                            onChange={(e) => setSubjectInput(e.target.value)} 
+                            onKeyDown={(e) => e.key === 'Enter' && addSubject()}
+                        />
+                        <button onClick={(e) => { e.stopPropagation(); addSubject(); }} style={styles.addBtn}>
+                          <Plus size={28} strokeWidth={3.5} color="white" />
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+                </section>
+              )}
+
+              <section>
+                <h2 style={styles.sectionTitle}>{selectedSubject ? "Folder Contents" : "Recent Materials"}</h2>
+                <div style={styles.filesContainer}>
+                    {filteredFiles.length === 0 ? (
+                        <div style={styles.emptyFiles}>Vault is empty.</div>
+                    ) : (
+                    filteredFiles.map(f => (
+                        <div key={f.id} style={styles.fileRow} onClick={() => setPreviewFile(f)}>
+                            <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
+                                <div style={styles.fileIcon}>{f.type.startsWith('image/') ? '🖼️' : '📄'}</div>
+                                <div>
+                                    <div style={{fontWeight:'700', fontSize:'14px'}}>{f.name}</div>
+                                    <div style={{fontSize:'12px', color:'#94a3b8'}}>{f.subjectName} • {f.date}</div>
+                                </div>
+                            </div>
+                            <div style={{display:'flex', gap:'12px', alignItems:'center'}}>
+                                <Eye size={18} color="#94a3b8" />
+                                <Star 
+                                  size={18} 
+                                  color={f.isFavorite ? "#f59e0b" : "#cbd5e1"} 
+                                  fill={f.isFavorite ? "#f59e0b" : "transparent"}
+                                  cursor="pointer"
+                                  onClick={(e) => { e.stopPropagation(); toggleFavorite(f.id); }}
+                                />
+                                <MoreVertical size={18} color="#94a3b8" cursor="pointer" onClick={(e) => { e.stopPropagation(); setActiveMenuId(f.id); }} />
+                            </div>
+                        </div>
+                    )))}
+                </div>
+              </section>
+            </>
+          )}
+
+          {currentView === 'library' && (
+            <>
+              <div style={styles.welcomeRow}>
+                <div>
+                  <h1 style={styles.welcomeTitle}>My Library</h1>
+                  <p style={{color: '#64748b', margin: 0}}>Browse and manage your entire study collection.</p>
+                </div>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button style={styles.iconBtn} onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
+                    {viewMode === 'grid' ? <List size={18} /> : <Grid size={18} />}
+                  </button>
+                  <button style={styles.uploadBtnMain} onClick={() => fileInputRef.current?.click()}>
+                    <Plus size={18} /> Add New File
+                  </button>
+                </div>
+              </div>
+
+              <div style={styles.filesContainer}>
+                {files.length === 0 ? (
+                  <div style={styles.emptyFiles}>Your library is empty.</div>
+                ) : (
+                  files.filter(f => f.name.toLowerCase().includes(searchTerm.toLowerCase())).map(f => (
+                    <div key={f.id} style={styles.fileRow} onClick={() => setPreviewFile(f)}>
+                      <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
+                        <div style={styles.fileIcon}><FileText size={18} color="#2563eb" /></div>
+                        <div>
+                          <div style={{fontWeight:'700', fontSize:'14px'}}>{f.name}</div>
+                          <div style={{fontSize:'12px', color:'#94a3b8'}}>{f.subjectName} • {f.date}</div>
+                        </div>
+                      </div>
+                      <div style={{display:'flex', gap:'15px', alignItems:'center'}}>
+                        <Star 
+                          size={18} 
+                          color={f.isFavorite ? "#f59e0b" : "#cbd5e1"} 
+                          fill={f.isFavorite ? "#f59e0b" : "transparent"}
+                          cursor="pointer"
+                          onClick={(e) => { e.stopPropagation(); toggleFavorite(f.id); }}
+                        />
+                        <Download size={18} color="#94a3b8" cursor="pointer" />
+                        <Trash2 size={18} color="#ef4444" cursor="pointer" onClick={(e) => { e.stopPropagation(); deleteFile(f.id, f.name); }} />
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
+          )}
 
           {currentView === 'favorites' && (
             <>
@@ -654,50 +805,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   downloadLink: { padding:'12px 24px', backgroundColor:'#2563eb', color:'#fff', borderRadius:'12px', textDecoration:'none', fontWeight:'700', fontSize:'14px' }
 };
 
-interface LoginSignupModalProps {
-  authMode: 'login' | 'signup';
-  setAuthMode: React.Dispatch<React.SetStateAction<'login' | 'signup'>>;
-  authEmail: string;
-  setAuthEmail: React.Dispatch<React.SetStateAction<string>>;
-  authPassword: string;
-  setAuthPassword: React.Dispatch<React.SetStateAction<string>>;
-  userEmail: string;
-  userPassword: string;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  setUserEmail: React.Dispatch<React.SetStateAction<string>>;
-  setUserPassword: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const LoginSignupModal: React.FC<LoginSignupModalProps> = ({
-  authMode, setAuthMode, authEmail, setAuthEmail, authPassword, setAuthPassword,
-  userEmail, userPassword, setIsLoggedIn, setUserEmail, setUserPassword
-}) => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        width: '100vw',
-        backgroundImage:
-          'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: '"Inter", sans-serif',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
-      {/* Left Side / Right Side JSX stays the same */}
-      {/* ... copy all your previous modal JSX here ... */}
-    </div>
-  );
-};
-
 export default Dashboard;
-
-
-
-
-
