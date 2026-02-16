@@ -43,6 +43,9 @@ const Dashboard: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
   const [darkMode, setDarkMode] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  const [authEmail, setAuthEmail] = useState('');
+const [authPassword, setAuthPassword] = useState('');
+
 
   const saveSettings = () => {
     localStorage.setItem('profileName', userName);
@@ -212,23 +215,24 @@ const Dashboard: React.FC = () => {
                 outline: 'none',
                 fontSize: '15px'
               }} 
-              placeholder="Username or Email" 
-              id="loginEmail" 
+              placeholder="Username or Email"
             />
-            <input 
-              style={{ 
-                padding: '16px', 
-                borderRadius: '12px', 
-                border: '1px solid rgba(255,255,255,0.1)', 
-                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                color: 'white', 
-                outline: 'none',
-                fontSize: '15px'
-              }} 
-              type="password" 
-              placeholder="Password" 
-              id="loginPass" 
-            />
+            <input
+  style={{
+    padding: '16px',
+    borderRadius: '12px',
+    border: '1px solid rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    color: 'white',
+    outline: 'none',
+    fontSize: '15px'
+  }}
+  type="password"
+  placeholder="Password"
+  value={authPassword}
+  onChange={(e) => setAuthPassword(e.target.value)}
+/>
+
           </div>
 
           <button 
@@ -244,28 +248,26 @@ const Dashboard: React.FC = () => {
     boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)'
   }}
   onClick={() => {
-    const e = (document.getElementById('loginEmail') as HTMLInputElement).value;
-    const p = (document.getElementById('loginPass') as HTMLInputElement).value;
-
-    if (authMode === 'login') {
-      if (e === userEmail && p === userPassword) {
-        localStorage.setItem('isLoggedIn', 'true');
-        setIsLoggedIn(true);
-      } else {
-        alert('Access Denied: Invalid Credentials');
-      }
-    } else {
-      setUserEmail(e);
-      setUserPassword(p);
-
-      localStorage.setItem('userEmail', e);
-      localStorage.setItem('userPassword', p);
+  if (authMode === 'login') {
+    if (authEmail === userEmail && authPassword === userPassword) {
       localStorage.setItem('isLoggedIn', 'true');
-
       setIsLoggedIn(true);
-      alert('Account Created Successfully!');
+    } else {
+      alert('Access Denied: Invalid Credentials');
     }
-  }}
+  } else {
+    setUserEmail(authEmail);
+    setUserPassword(authPassword);
+
+    localStorage.setItem('userEmail', authEmail);
+    localStorage.setItem('userPassword', authPassword);
+    localStorage.setItem('isLoggedIn', 'true');
+
+    setIsLoggedIn(true);
+    alert('Account Created Successfully!');
+  }
+}}
+
 >
   {authMode === 'login' ? 'Sign In' : 'Create Account'}
 </button>
@@ -816,6 +818,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
 
 
 
