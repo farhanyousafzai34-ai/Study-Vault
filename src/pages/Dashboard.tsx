@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   LayoutDashboard, Library, Star, Settings, Search, 
   Folder, Plus, Upload, LogOut, Zap, BookOpen, TrendingUp, MoreVertical, Download, Trash2,
-  BarChart3, ChevronLeft, Grid, List, FileText, User, Bell, Shield, Moon, X, Eye
+  BarChart3, ChevronLeft, Grid, List, FileText, User, Bell, Shield, X, Eye
 } from 'lucide-react';
 
 // --- Interfaces ---
@@ -33,7 +33,6 @@ const Dashboard: React.FC = () => {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [subjectMenuId, setSubjectMenuId] = useState<string | null>(null);
   
   // Settings States
@@ -43,7 +42,6 @@ const Dashboard: React.FC = () => {
   const [userEmail, setUserEmail] = useState(() => localStorage.getItem('userEmail') || 'farhan@example.com');
   const [userPassword, setUserPassword] = useState(() => localStorage.getItem('userPassword') || '1234');
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
-  const [darkMode, setDarkMode] = useState(false);
 
   const saveSettings = () => {
     localStorage.setItem('profileName', userName);
@@ -764,5 +762,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   previewPlaceholder: { display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'20px', textAlign:'center' },
   downloadLink: { padding:'12px 24px', backgroundColor:'#2563eb', color:'#fff', borderRadius:'12px', textDecoration:'none', fontWeight:'700', fontSize:'14px' }
 };
+
 
 export default Dashboard;
