@@ -186,17 +186,30 @@ const Dashboard: React.FC = () => {
         height: '100vh',
         width: '100vw',
         backgroundImage:
-          'url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
+          'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?auto=format&fit=crop&q=80&w=2070")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         fontFamily: '"Inter", sans-serif',
         overflow: 'hidden',
+        position: 'relative',
       }}
     >
-      {/* Centered Glass Card with animation */}
+      <canvas
+        id="particles"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+        }}
+      ></canvas>
+
       <div
         style={{
           width: '800px',
+          maxWidth: '95%',
           height: '500px',
           borderRadius: '24px',
           backdropFilter: 'blur(20px)',
@@ -205,9 +218,8 @@ const Dashboard: React.FC = () => {
           display: 'flex',
           overflow: 'hidden',
           boxShadow: '0 10px 40px rgba(0,0,0,0.25)',
-          transform: 'translateY(-20px)',
-          opacity: 0,
-          animation: 'fadeInUp 0.8s forwards',
+          animation: 'fadeInUp 0.8s forwards, floatCard 6s ease-in-out infinite alternate',
+          transformOrigin: 'center',
         }}
       >
         {/* Left Side */}
@@ -222,8 +234,8 @@ const Dashboard: React.FC = () => {
             alignItems: 'center',
             padding: '40px 20px',
             textAlign: 'center',
-            transition: 'transform 0.3s ease',
           }}
+          className="leftSide"
         >
           <div
             style={{
@@ -238,21 +250,12 @@ const Dashboard: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '20px',
-              transition: 'transform 0.3s ease',
+              animation: 'floatLogo 6s ease-in-out infinite alternate',
             }}
           >
             S
           </div>
-          <h1
-            style={{
-              fontSize: '28px',
-              fontWeight: '800',
-              marginBottom: '15px',
-              transition: 'color 0.3s ease',
-            }}
-          >
-            Study Vault
-          </h1>
+          <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '15px' }}>Study Vault</h1>
           <p style={{ fontSize: '14px', lineHeight: '1.6', maxWidth: '200px' }}>
             Organise Subjects, Upload Notes, and keep every resource in one source, focused Workspace.
           </p>
@@ -268,13 +271,13 @@ const Dashboard: React.FC = () => {
             justifyContent: 'center',
             padding: '40px 50px',
           }}
+          className="rightSide"
         >
           <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a', marginBottom: '10px' }}>
             Welcome Back
           </h2>
           <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '30px' }}>Sign in to your Account</p>
 
-          {/* Email */}
           <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Email</label>
           <input
             type="email"
@@ -295,7 +298,6 @@ const Dashboard: React.FC = () => {
             onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
           />
 
-          {/* Password */}
           <label style={{ fontSize: '14px', fontWeight: '600', marginBottom: '6px' }}>Password</label>
           <input
             type="password"
@@ -316,7 +318,6 @@ const Dashboard: React.FC = () => {
             onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
           />
 
-          {/* Sign In Button */}
           <button
             onClick={() => {
               if (authMode === 'login') {
@@ -364,7 +365,6 @@ const Dashboard: React.FC = () => {
             {authMode === 'login' ? 'Sign In' : 'Create Account'}
           </button>
 
-          {/* Switch Mode */}
           <p style={{ fontSize: '14px', textAlign: 'center', color: '#64748b' }}>
             {authMode === 'login' ? (
               <>
@@ -391,206 +391,19 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Keyframe animation */}
+      {/* Responsive CSS */}
       <style>
         {`
-          @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(-20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+          @media (max-width: 768px) {
+            .leftSide { display: none; }
+            div[style*="flex"] { flex-direction: column; height: auto; padding: 20px; }
+            .rightSide { width: 100%; padding: 20px; }
           }
         `}
       </style>
     </div>
   );
 }
-
-  return (
-    <div style={styles.appContainer}>
-      <input type="file" ref={fileInputRef} onChange={handleFileUpload} style={{ display: 'none' }} />
-
-      {/* --- PREVIEW MODAL --- */}
-      {previewFile && (
-        <div style={styles.modalOverlay} onClick={() => setPreviewFile(null)}>
-            <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
-                <div style={styles.modalHeader}>
-                    <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                        <FileText size={20} color="#2563eb" />
-                        <span style={{fontWeight:'700', color:'#1e293b'}}>{previewFile.name}</span>
-                    </div>
-                    <button style={styles.closeBtn} onClick={() => setPreviewFile(null)}><X size={20}/></button>
-                </div>
-                <div style={styles.modalBody}>
-                    {renderPreviewContent()}
-                </div>
-            </div>
-        </div>
-      )}
-
-      {/* --- SIDEBAR --- */}
-      <aside style={styles.sidebar}>
-        <div style={styles.logoSection}>
-          <div style={styles.logoIcon}>S</div>
-          <h2 style={styles.logoText}>StudyVault</h2>
-        </div>
-        
-        <nav style={styles.nav}>
-          <div style={styles.navLabel}>MAIN MENU</div>
-          <div style={currentView === 'dashboard' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('dashboard')}>
-            <LayoutDashboard size={18} /> Dashboard
-          </div>
-          <div style={currentView === 'library' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('library')}>
-            <Library size={18} /> My Library
-          </div>
-          
-          <div style={styles.navLabel}>PERSONAL</div>
-          <div style={currentView === 'favorites' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('favorites')}>
-            <Star size={18} /> Favorites
-          </div>
-          <div style={currentView === 'analytics' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('analytics')}>
-            <BarChart3 size={18} /> Analytics
-          </div>
-          <div style={currentView === 'settings' ? styles.navItemActive : styles.navItem} onClick={() => setCurrentView('settings')}>
-            <Settings size={18} /> Settings
-          </div>
-        </nav>
-
-        <button onClick={handleSignOut} style={styles.signOutBtn}><LogOut size={16} /> Sign Out</button>
-      </aside>
-
-      {/* --- MAIN CONTENT --- */}
-      <main style={styles.mainScroll}>
-        <header style={styles.header}>
-          <div style={styles.searchContainer}>
-            <Search size={18} color="#94a3b8" />
-            <input 
-                placeholder="Search handouts, notes, or topics..." 
-                style={styles.headerSearch} 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </header>
-
-        <div style={styles.contentPadding}>
-          {currentView === 'dashboard' && (
-            <>
-              <div style={styles.welcomeRow}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    {selectedSubject && (
-                        <button onClick={() => setSelectedSubject(null)} style={styles.backBtn}>
-                            <ChevronLeft size={20} color="#64748b" />
-                        </button>
-                    )}
-                    <div>
-                        <h1 style={styles.welcomeTitle}>
-                            {selectedSubject ? selectedSubject : `Welcome back, ${userName}`}
-                        </h1>
-                        <p style={{color: '#64748b', margin: 0}}>
-                            {selectedSubject ? `Managing files in ${selectedSubject}` : "Here's what's happening with your study materials."}
-                        </p>
-                    </div>
-                </div>
-                <button style={styles.uploadBtnMain} onClick={() => fileInputRef.current?.click()}>
-                    <Upload size={18} /> {selectedSubject ? 'Upload to Folder' : 'Upload New'}
-                </button>
-              </div>
-              
-              {!selectedSubject && (
-                <section style={{ marginBottom: '40px' }}>
-                    <h2 style={styles.sectionTitle}>Your Subjects</h2>
-                    <div style={styles.subjectGrid}>
-                    {subjects.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase())).map((sub, i) => (
-                        <div key={i} style={styles.subjectCard} onClick={() => setSelectedSubject(sub.name)}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div style={{ ...styles.folderWrapper, backgroundColor: sub.color }}>
-                                <Folder size={20} fill="white" color="white" />
-                            </div>
-                            <div style={{ position: 'relative' }}>
-                                <MoreVertical 
-                                    size={18} 
-                                    color="#94a3b8" 
-                                    cursor="pointer" 
-                                    onClick={(e) => { e.stopPropagation(); setSubjectMenuId(sub.name); }} 
-                                />
-                                {subjectMenuId === sub.name && (
-                                    <div style={styles.menuPop}>
-                                        <div style={styles.menuItem} onClick={(e) => { e.stopPropagation(); deleteSubject(sub.name); }}>
-                                            <Trash2 size={14} /> Delete Folder
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                        <h3 style={styles.subCardTitle}>{sub.name}</h3>
-                        <p style={styles.subCardFiles}>{files.filter(f => f.subjectName === sub.name).length} files</p>
-                        </div>
-                    ))}
-
-                    <div style={styles.newSubjectCard} onClick={(e) => e.stopPropagation()}>
-                        <div style={styles.colorPickerRow}>
-                        {folderColors.map(c => (
-                            <div 
-                                key={c} 
-                                onClick={() => setSelectedColor(c)} 
-                                style={{...styles.colorDot, backgroundColor: c, border: selectedColor === c ? '2px solid #000' : 'none' }} 
-                            />
-                        ))}
-                        </div>
-                        <div style={{ display: 'flex', gap: '4px', alignItems: 'center', width: '100%', overflow: 'hidden' }}>
-                        <input 
-                            style={styles.newSubInput} 
-                            placeholder="New Subject..." 
-                            value={subjectInput} 
-                            onChange={(e) => setSubjectInput(e.target.value)} 
-                            onKeyDown={(e) => e.key === 'Enter' && addSubject()}
-                        />
-                        <button onClick={(e) => { e.stopPropagation(); addSubject(); }} style={styles.addBtn}>
-                          <Plus size={28} strokeWidth={3.5} color="white" />
-                        </button>
-                        </div>
-                    </div>
-                    </div>
-                </section>
-              )}
-
-              <section>
-                <h2 style={styles.sectionTitle}>{selectedSubject ? "Folder Contents" : "Recent Materials"}</h2>
-                <div style={styles.filesContainer}>
-                    {filteredFiles.length === 0 ? (
-                        <div style={styles.emptyFiles}>Vault is empty.</div>
-                    ) : (
-                    filteredFiles.map(f => (
-                        <div key={f.id} style={styles.fileRow} onClick={() => setPreviewFile(f)}>
-                            <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
-                                <div style={styles.fileIcon}>{f.type.startsWith('image/') ? '🖼️' : '📄'}</div>
-                                <div>
-                                    <div style={{fontWeight:'700', fontSize:'14px'}}>{f.name}</div>
-                                    <div style={{fontSize:'12px', color:'#94a3b8'}}>{f.subjectName} • {f.date}</div>
-                                </div>
-                            </div>
-                            <div style={{display:'flex', gap:'12px', alignItems:'center'}}>
-                                <Eye size={18} color="#94a3b8" />
-                                <Star 
-                                  size={18} 
-                                  color={f.isFavorite ? "#f59e0b" : "#cbd5e1"} 
-                                  fill={f.isFavorite ? "#f59e0b" : "transparent"}
-                                  cursor="pointer"
-                                  onClick={(e) => { e.stopPropagation(); toggleFavorite(f.id); }}
-                                />
-                                <MoreVertical size={18} color="#94a3b8" cursor="pointer" onClick={(e) => { e.stopPropagation(); setActiveMenuId(f.id); }} />
-                            </div>
-                        </div>
-                    )))}
-                </div>
-              </section>
-            </>
-          )}
 
           {currentView === 'library' && (
             <>
@@ -912,5 +725,6 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
 
 
