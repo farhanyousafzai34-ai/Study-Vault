@@ -190,9 +190,10 @@ const Dashboard: React.FC = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         fontFamily: '"Inter", sans-serif',
+        overflow: 'hidden',
       }}
     >
-      {/* Centered Glass Card */}
+      {/* Centered Glass Card with animation */}
       <div
         style={{
           width: '800px',
@@ -204,6 +205,9 @@ const Dashboard: React.FC = () => {
           display: 'flex',
           overflow: 'hidden',
           boxShadow: '0 10px 40px rgba(0,0,0,0.25)',
+          transform: 'translateY(-20px)',
+          opacity: 0,
+          animation: 'fadeInUp 0.8s forwards',
         }}
       >
         {/* Left Side */}
@@ -218,6 +222,7 @@ const Dashboard: React.FC = () => {
             alignItems: 'center',
             padding: '40px 20px',
             textAlign: 'center',
+            transition: 'transform 0.3s ease',
           }}
         >
           <div
@@ -233,11 +238,21 @@ const Dashboard: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '20px',
+              transition: 'transform 0.3s ease',
             }}
           >
             S
           </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '15px' }}>Study Vault</h1>
+          <h1
+            style={{
+              fontSize: '28px',
+              fontWeight: '800',
+              marginBottom: '15px',
+              transition: 'color 0.3s ease',
+            }}
+          >
+            Study Vault
+          </h1>
           <p style={{ fontSize: '14px', lineHeight: '1.6', maxWidth: '200px' }}>
             Organise Subjects, Upload Notes, and keep every resource in one source, focused Workspace.
           </p>
@@ -273,8 +288,11 @@ const Dashboard: React.FC = () => {
               width: '100%',
               outline: 'none',
               fontSize: '14px',
+              transition: '0.3s all',
             }}
             placeholder="Enter your email"
+            onFocus={(e) => (e.currentTarget.style.borderColor = '#2563eb')}
+            onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
           />
 
           {/* Password */}
@@ -291,8 +309,11 @@ const Dashboard: React.FC = () => {
               width: '100%',
               outline: 'none',
               fontSize: '14px',
+              transition: '0.3s all',
             }}
             placeholder="Enter your password"
+            onFocus={(e) => (e.currentTarget.style.borderColor = '#2563eb')}
+            onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
           />
 
           {/* Sign In Button */}
@@ -329,6 +350,15 @@ const Dashboard: React.FC = () => {
               cursor: 'pointer',
               marginBottom: '20px',
               boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#1e40af';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#2563eb';
+              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
             {authMode === 'login' ? 'Sign In' : 'Create Account'}
@@ -360,6 +390,22 @@ const Dashboard: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Keyframe animation */}
+      <style>
+        {`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }
@@ -866,4 +912,5 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
 
