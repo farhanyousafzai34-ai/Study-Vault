@@ -168,6 +168,7 @@ const Dashboard: React.FC = () => {
   };
   if (darkMode) console.log("Dark mode is enabled");
   if (activeMenuId) console.log("Menu active for:", activeMenuId);
+  console.log(setDarkMode);
   if (!isLoggedIn) {
     return (
       <div style={{ 
@@ -765,3 +766,4 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
