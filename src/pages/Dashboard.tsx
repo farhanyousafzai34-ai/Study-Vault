@@ -42,10 +42,11 @@ const Dashboard: React.FC = () => {
   const [userPassword, setUserPassword] = useState(() => localStorage.getItem('userPassword') || '1234');
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
   const [darkMode, setDarkMode] = useState(false);
+
+  // Auth (login/signup) UI state (controlled inputs)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [authEmail, setAuthEmail] = useState('');
-const [authPassword, setAuthPassword] = useState('');
-
+  const [authPassword, setAuthPassword] = useState('');
 
   const saveSettings = () => {
     localStorage.setItem('profileName', userName);
@@ -173,6 +174,8 @@ const [authPassword, setAuthPassword] = useState('');
   if (darkMode) console.log("Dark mode is enabled");
   if (activeMenuId) console.log("Menu active for:", activeMenuId);
   console.log(setDarkMode);
+
+  // --- LOGIN / SIGNUP MODAL ---
   if (!isLoggedIn) {
     return (
       <div style={{ 
@@ -201,8 +204,9 @@ const [authPassword, setAuthPassword] = useState('');
           border: '1px solid rgba(255, 255, 255, 0.1)',
           textAlign: 'center'
         }}>
-          <h1 style={{ color: 'white', fontSize: '42px', marginBottom: '10px', fontWeight: '700', letterSpacing: '-1px' }}>{authMode === 'login' ? 'Login' : 'Create Account'}
-</h1>
+          <h1 style={{ color: 'white', fontSize: '42px', marginBottom: '10px', fontWeight: '700', letterSpacing: '-1px' }}>
+            {authMode === 'login' ? 'Login' : 'Create Account'}
+          </h1>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <input 
@@ -216,101 +220,85 @@ const [authPassword, setAuthPassword] = useState('');
                 fontSize: '15px'
               }} 
               placeholder="Username or Email"
+              value={authEmail}
+              onChange={(e) => setAuthEmail(e.target.value)}
             />
-            <input
-  style={{
-    padding: '16px',
-    borderRadius: '12px',
-    border: '1px solid rgba(255,255,255,0.1)',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    color: 'white',
-    outline: 'none',
-    fontSize: '15px'
-  }}
-  type="password"
-  placeholder="Password"
-  value={authPassword}
-  onChange={(e) => setAuthPassword(e.target.value)}
-/>
-
+            <input 
+              style={{ 
+                padding: '16px', 
+                borderRadius: '12px', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                color: 'white', 
+                outline: 'none',
+                fontSize: '15px'
+              }} 
+              type="password" 
+              placeholder="Password" 
+              value={authPassword}
+              onChange={(e) => setAuthPassword(e.target.value)}
+            />
           </div>
 
           <button 
-  style={{ 
-    padding: '16px', 
-    backgroundColor: '#9333ea',
-    color: 'white', 
-    border: 'none', 
-    borderRadius: '12px', 
-    fontWeight: '700', 
-    cursor: 'pointer',
-    fontSize: '16px',
-    boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)'
-  }}
-  onClick={() => {
-  if (authMode === 'login') {
-    if (authEmail === userEmail && authPassword === userPassword) {
-      localStorage.setItem('isLoggedIn', 'true');
-      setIsLoggedIn(true);
-    } else {
-      alert('Access Denied: Invalid Credentials');
-    }
-  } else {
-    setUserEmail(authEmail);
-    setUserPassword(authPassword);
+            style={{ 
+              padding: '16px', 
+              backgroundColor: '#9333ea', // Deep Purple
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '12px', 
+              fontWeight: '700', 
+              cursor: 'pointer',
+              fontSize: '16px',
+              boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)'
+            }}
+            onClick={() => {
+              if (authMode === 'login') {
+                if (authEmail === userEmail && authPassword === userPassword) {
+                  localStorage.setItem('isLoggedIn', 'true');
+                  setIsLoggedIn(true);
+                } else {
+                  alert('Access Denied: Invalid Credentials');
+                }
+              } else {
+                setUserEmail(authEmail);
+                setUserPassword(authPassword);
 
-    localStorage.setItem('userEmail', authEmail);
-    localStorage.setItem('userPassword', authPassword);
-    localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', authEmail);
+                localStorage.setItem('userPassword', authPassword);
+                localStorage.setItem('isLoggedIn', 'true');
 
-    setIsLoggedIn(true);
-    alert('Account Created Successfully!');
-  }
-}}
-
->
-  {authMode === 'login' ? 'Sign In' : 'Create Account'}
-</button>
-
-
+                setIsLoggedIn(true);
+                alert('Account Created Successfully!');
+              }
+            }}
+          >
+            {authMode === 'login' ? 'Sign In' : 'Create Account'}
+          </button>
 
           <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginTop: '10px' }}>
-  {authMode === 'login' ? (
-    <>
-      New here?{" "}
-      <span
-        style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
-        onClick={() => setAuthMode('signup')}
-      >
-        Create Account
-      </span>
-    </>
-  ) : (
-    <>
-      Already have an account?{" "}
-      <span
-        style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
-        onClick={() => setAuthMode('login')}
-      >
-        Sign In
-      </span>
-    </>
-  )}
-</div>
-
-  New here?{" "}
-  <span
-    style={{
-      color: 'white',
-      cursor: 'pointer',
-      fontWeight: '600',
-      textDecoration: 'underline'
-    }}
-    onClick={() => setAuthMode('signup')}
-  >
-    Create Account
-  </span>
-</div>
+            {authMode === 'login' ? (
+              <>
+                New here?{" "}
+                <span
+                  style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+                  onClick={() => setAuthMode('signup')}
+                >
+                  Create Account
+                </span>
+              </>
+            ) : (
+              <>
+                Already have an account?{" "}
+                <span
+                  style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+                  onClick={() => setAuthMode('login')}
+                >
+                  Sign In
+                </span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -818,8 +806,3 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
-
-
-
-
-
