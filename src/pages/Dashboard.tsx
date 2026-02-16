@@ -273,6 +273,29 @@ const Dashboard: React.FC = () => {
 
 
           <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginTop: '10px' }}>
+  {authMode === 'login' ? (
+    <>
+      New here?{" "}
+      <span
+        style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+        onClick={() => setAuthMode('signup')}
+      >
+        Create Account
+      </span>
+    </>
+  ) : (
+    <>
+      Already have an account?{" "}
+      <span
+        style={{ color: 'white', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+        onClick={() => setAuthMode('login')}
+      >
+        Sign In
+      </span>
+    </>
+  )}
+</div>
+
   New here?{" "}
   <span
     style={{
@@ -793,6 +816,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default Dashboard;
+
 
 
 
